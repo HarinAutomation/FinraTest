@@ -1,8 +1,16 @@
 import io.restassured.RestAssured;
+import io.restassured.config.HttpClientConfig;
 import io.restassured.http.ContentType;
+import io.restassured.http.Cookie;
+import io.restassured.http.Cookies;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.apache.http.client.RedirectStrategy;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.junit.Assert;
+
+import java.util.Map;
 
 public class Common {
 
@@ -10,8 +18,25 @@ public class Common {
     private static Common common = null;
     public RequestSpecification httpRequest = null;
 
+
+
+
+
+
     private Common(){
         RestAssured.baseURI = BASEURI;
+
+            RedirectStrategy redirectStrategy = new DefaultRedirectStrategy() {
+            protected boolean isRedirectable(String method) {
+                return true;
+            }
+        };
+
+        RestAssured.config = RestAssured.config().httpClient(HttpClientConfig.httpClientConfig().httpClientFactory(() -> {
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            httpClient.setRedirectStrategy(redirectStrategy);
+            return httpClient;
+        }));
     }
 
     public static Common getInstance(){
@@ -26,9 +51,10 @@ public class Common {
     public Response generateNewDeck(boolean isJockerEnabled){
         //https://deckofcardsapi.com/api/deck/new/
         httpRequest= RestAssured.given();
-        httpRequest.header("Content-Type", "application/json");
         if(isJockerEnabled) {
-            return httpRequest.queryParams("jokers_enabled", "true").get("/new");
+            Response response =  httpRequest.queryParam("jokers_enabled", "true").contentType(ContentType.JSON).post("/new");
+
+            return response;
         }else
         {
             return httpRequest.when().get("/new");

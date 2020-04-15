@@ -21,14 +21,22 @@ public class TestDeckAPI
         Response response = Common.getInstance().generateNewDeck(false);
         Common.getInstance().verifyStatusCodes(response,200,"HTTP/1.1 200 OK");
         Assert.assertEquals(52,response.jsonPath().getInt("remaining"));
-
+        Assert.assertNotNull(response.jsonPath().getString("deck_id"));
+        Assert.assertTrue(response.jsonPath().getBoolean("success"));
+        Assert.assertFalse(response.jsonPath().getBoolean("shuffled"));
     }
 
     @Test
     public void testDeckCreationWithJockers(){
         Response response = Common.getInstance().generateNewDeck(true);
+        System.out.println(response.getStatusCode());
+        System.out.println(response.getBody().asString());
         Common.getInstance().verifyStatusCodes(response,200,"HTTP/1.1 200 OK");
         Assert.assertEquals(54,response.jsonPath().getInt("remaining"));
+        Assert.assertNotNull(response.jsonPath().getString("deck_id"));
+        Assert.assertTrue(response.jsonPath().getBoolean("success"));
+        Assert.assertFalse(response.jsonPath().getBoolean("shuffled"));
+
     }
 
     @Test
