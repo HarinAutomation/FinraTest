@@ -102,7 +102,10 @@ public class TestDeckAPI
 
 
     /*
-                Test case 4 : Generate a new Deck and Draw a card with a negative count (-1) expected to remove all the cards except 1 card.
+                Test case 5 : Generate a new Deck
+                 Draw a card with a count as (0)
+                 expected to remove zero cards and retrun the remaining card count
+                 without an error.
         */
     @Test
     public void drawNumberOfCardsWithZeroCount(){
@@ -115,6 +118,12 @@ public class TestDeckAPI
         Assert.assertEquals(0,drawCardResponse.jsonPath().getList("cards.code").size());
     }
 
+    /*
+                Test case 6 : Generate a new Deck
+                 Draw a card with a count as negative value with more than the deck size
+                 expected to remove zero cards and retrun the remaining card count
+                 without an error.
+        */
 
     @Test
     public void drawNumberOfCardsWithGreaterNegCount(){
@@ -129,7 +138,10 @@ public class TestDeckAPI
 
 
     /*
-        Test case
+         Test case 7 : Generate a new Deck
+                 Draw a card with a count  with more than the deck size
+                 expected to remove all cards and retrun the remaining card count as 0
+                 with an error saying "Not enough cards remaining to draw 58 additional"
      */
     @Test
     public void drawNumberOfCardsWithGreaterCount(){
@@ -141,6 +153,22 @@ public class TestDeckAPI
         Assert.assertFalse(drawCardResponse.jsonPath().getBoolean("success"));
         Assert.assertEquals(response.jsonPath().getInt("remaining"),drawCardResponse.jsonPath().getList("cards.code").size());
         Assert.assertEquals("Not enough cards remaining to draw 58 additional",drawCardResponse.jsonPath().getString("error"));
+    }
+
+    /*
+        Test case 8 : Generate a new Deck and Draw all the cards and then try to draw a card on an empty deck with count with a negative value
+     */
+
+    @Test
+    public void drawNumberOfCardsWithNegativeCountOnEmptyDeck(){
+        Response response = Common.getInstance().generateNewDeck(false);
+        Common.getInstance().verifyStatusCodes(response,200,"HTTP/1.1 200 OK");
+        Common.getInstance().drawNewCard(response.jsonPath().get("deck_id").toString().trim(),52);
+        Response drawCardResponse = Common.getInstance().drawNewCard(response.jsonPath().get("deck_id").toString().trim(),-1);
+        Assert.assertEquals(0, drawCardResponse.jsonPath().getInt("remaining"));
+        Assert.assertEquals(response.jsonPath().getString("deck_id"),drawCardResponse.jsonPath().getString("deck_id"));
+        Assert.assertTrue(drawCardResponse.jsonPath().getBoolean("success"));
+        Assert.assertEquals(0,drawCardResponse.jsonPath().getList("cards.code").size());
     }
 
 }
