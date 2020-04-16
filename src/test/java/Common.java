@@ -58,6 +58,12 @@ public class Common {
         return httpRequest.queryParam("count",numberOfCards).get("/"+deckId+"/draw");
     }
 
+    public Response drawNewCardForInvalidCase(String deckId,String numberOfCards){
+        //https://deckofcardsapi.com/api/deck/<<deck_id>>/draw/
+        return httpRequest.queryParam("count",numberOfCards).get("/"+deckId+"/draw");
+    }
+
+
     public void verifyStatusCodes(Response response,int statusCode, String statusLine ){
         Assert.assertEquals("application/json",response.header("Content-Type"));
         Assert.assertEquals("gzip",response.header("Content-Encoding"));

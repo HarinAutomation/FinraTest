@@ -160,5 +160,31 @@ public class DeckAPITest
         Assert.assertEquals(0,drawCardResponse.jsonPath().getList("cards.code").size());
     }
 
+     /*
+        Test case 9 :Invalid Count value to draw a card from a deck
+     */
+
+    @Test
+    public void invalidCountValue(){
+        Response response = Common.getInstance().generateNewDeck(false);
+        Common.getInstance().verifyStatusCodes(response,200,"HTTP/1.1 200 OK");
+        Response drawCardResponse = Common.getInstance().drawNewCardForInvalidCase(response.jsonPath().get("deck_id").toString().trim(),"test");
+        Assert.assertEquals(500,drawCardResponse.getStatusCode());
+        Assert.assertEquals("HTTP/1.1 500 Internal Server Error",drawCardResponse.getStatusLine());
+    }
+
+     /*
+        Test case 9 :Invalid Count value to draw a card from a deck
+     */
+
+    @Test
+    public void invalidDeckIdValue(){
+        Response response = Common.getInstance().generateNewDeck(false);
+        Common.getInstance().verifyStatusCodes(response,200,"HTTP/1.1 200 OK");
+        Response drawCardResponse = Common.getInstance().drawNewCardForInvalidCase("testtswt","1");
+        Assert.assertEquals(500,drawCardResponse.getStatusCode());
+        Assert.assertEquals("HTTP/1.1 500 Internal Server Error",drawCardResponse.getStatusLine());
+    }
+
 }
 
