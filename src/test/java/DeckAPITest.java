@@ -1,6 +1,4 @@
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,13 +9,6 @@ import java.util.Collection;
 
 public class DeckAPITest
 {
-    DeckOfDecks deckOfDecks = null;
-
-    @Before
-    public void init(){
-        deckOfDecks = new DeckOfDecks();
-    };
-
     /*
         Test case 1 : Generate a new Deck without jockers
      */
