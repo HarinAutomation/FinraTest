@@ -76,7 +76,7 @@ public class DeckAPITest
 
 
     /*
-            Test case 4 : Generate a new Deck and Draw a card with a negative count (-1) expected to remove all the cards except 1 card.
+            Test case 5 : Generate a new Deck and Draw a card with a negative count (-1) expected to remove all the cards except 1 card.
     */
     @Test
     public void drawNumberOfCardsWithNegativeCount(){
@@ -91,7 +91,7 @@ public class DeckAPITest
 
 
     /*
-                Test case 5 : Generate a new Deck
+                Test case 6 : Generate a new Deck
                  Draw a card with a count as (0)
                  expected to remove zero cards and retrun the remaining card count
                  without an error.
@@ -108,7 +108,7 @@ public class DeckAPITest
     }
 
     /*
-                Test case 6 : Generate a new Deck
+                Test case 7 : Generate a new Deck
                  Draw a card with a count as negative value with more than the deck size
                  expected to remove zero cards and retrun the remaining card count
                  without an error.
@@ -127,7 +127,7 @@ public class DeckAPITest
 
 
     /*
-         Test case 7 : Generate a new Deck
+         Test case 8 : Generate a new Deck
                  Draw a card with a count  with more than the deck size
                  expected to remove all cards and retrun the remaining card count as 0
                  with an error saying "Not enough cards remaining to draw 58 additional"
@@ -145,7 +145,7 @@ public class DeckAPITest
     }
 
     /*
-        Test case 8 : Generate a new Deck and Draw all the cards and then try to draw a card on an empty deck with count with a negative value
+        Test case 9 : Generate a new Deck and Draw all the cards and then try to draw a card on an empty deck with count with a negative value
      */
 
     @Test
@@ -161,7 +161,7 @@ public class DeckAPITest
     }
 
      /*
-        Test case 9 :Invalid Count value to draw a card from a deck
+        Test case 10 :Invalid Count value to draw a card from a deck
      */
 
     @Test
@@ -174,7 +174,7 @@ public class DeckAPITest
     }
 
      /*
-        Test case 9 :Invalid Count value to draw a card from a deck
+        Test case 11 :Invalid Count value to draw a card from a deck
      */
 
     @Test
