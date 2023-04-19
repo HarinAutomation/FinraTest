@@ -54,58 +54,39 @@
                         [INFO] Finished at: 2020-04-16T11:26:48-05:00
                         [INFO] ------------------------------------------------------------------------
 
-import json
-import jsonschema
-
-# Define the JSON schema
-schema = {
-    "type": "object",
-    "required": ["values"],
-    "anyOf": [
-        {"required": ["column_name"]},
-        {"required": ["legacy"]}
-    ],
-    "properties": {
-        "column_name": {"type": "string"},
-        "values": {"type": "array", "items": {"type": "string"}},
-        "legacy": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "legacy_id": {"type": "string"},
-                    "legacy_type": {"type": "string", "default": null}
-                }
-            }
-        }
-    }
-}
-
-# Define the JSON payload
-json_payload = '''
 {
-    "columns": [
-        {
-            "column_name": "primary_key",
-            "values": ["1", "2", "3"]
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "columns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "column_name": {"type": "string"},
+          "values": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
         },
-        {
-            "column_name": "long_code",
-            "values": ["1", "2", "3"]
-        }
-    ],
-    "legacy": [
-        {
-            "legacy_id": "123",
-            "legacy_code": "test"
-        }
-    ]
+        "required": ["column_name", "values"]
+      }
+    },
+    "legacy": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "legacy_id": {"type": "string"},
+          "legacy_type": {"type": "string"}
+        },
+        "required": ["legacy_id", "legacy_type"]
+      }
+    }
+  },
+  "oneOf": [
+    {"required": ["columns"]},
+    {"required": ["legacy"]}
+  ]
 }
-'''
-
-# Parse the JSON payload
-payload = json.loads(json_payload)
-
-# Validate the JSON payload against the schema
-jsonschema.validate(payload, schema)
 
