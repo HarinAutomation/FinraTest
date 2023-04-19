@@ -54,39 +54,44 @@
                         [INFO] Finished at: 2020-04-16T11:26:48-05:00
                         [INFO] ------------------------------------------------------------------------
 
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "properties": {
-    "columns": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "column_name": {"type": "string"},
-          "values": {
-            "type": "array",
-            "items": {"type": "string"}
-          }
+from schema import Schema, Optional, Or
+
+# Define the schema for the JSON payload
+payload_schema = Schema({
+    Optional('columns'): [
+        {
+            'column_name': str,
+            'values': [str],
         },
-        "required": ["column_name", "values"]
-      }
-    },
-    "legacy": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "legacy_id": {"type": "string"},
-          "legacy_type": {"type": "string"}
+    ],
+    Optional('legacy'): [
+        {
+            'legacy_id': str,
+            'legacy_type': str,
         },
-        "required": ["legacy_id", "legacy_type"]
-      }
-    }
-  },
-  "oneOf": [
-    {"required": ["columns"]},
-    {"required": ["legacy"]}
-  ]
+    ],
+    Or('columns', 'legacy'): object,
+})
+
+# Example JSON payload to validate
+json_payload = {
+    'columns': [
+        {
+            'column_name': 'long_code',
+            'values': ['1', '2', '3'],
+        },
+        {
+            'column_name': 'long_code',
+            'values': ['1', '2', '3'],
+        },
+    ],
+    'legacy': [
+        {
+            'legacy_id': 'harin',
+            'legacy_type': 'METHOD',
+        },
+    ],
 }
 
+# Validate the JSON payload against the schema
+payload_schema.validate(json_payload)
