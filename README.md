@@ -60,31 +60,25 @@ import jsonschema
 # Define the JSON schema
 schema = {
     "type": "object",
+    "required": ["values"],
+    "anyOf": [
+        {"required": ["column_name"]},
+        {"required": ["legacy"]}
+    ],
     "properties": {
-        "columns": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "column_name": {"type": "string"},
-                    "values": {"type": "array", "items": {"type": "string"}}
-                },
-                "required": ["column_name", "values"]
-            }
-        },
+        "column_name": {"type": "string"},
+        "values": {"type": "array", "items": {"type": "string"}},
         "legacy": {
             "type": "array",
             "items": {
                 "type": "object",
                 "properties": {
                     "legacy_id": {"type": "string"},
-                    "legacy_code": {"type": "string"}
-                },
-                "required": ["legacy_id", "legacy_code"]
+                    "legacy_type": {"type": "string", "default": null}
+                }
             }
         }
-    },
-    "required": ["columns", "legacy"]
+    }
 }
 
 # Define the JSON payload
